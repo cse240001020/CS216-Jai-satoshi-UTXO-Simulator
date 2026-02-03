@@ -1,0 +1,165 @@
+                                     python3 src/main.py
+
+ Bitcoin Transaction Simulator
+1. Create new transaction
+2. View UTXO set
+3. View mempool
+4. Mine block
+5. Run test scenarios
+6. Exit
+Enter choice: 2
+
+UTXO SET:
+('genesis', 0) {'amount': 50.0, 'owner': 'Alice'}
+('genesis', 1) {'amount': 30.0, 'owner': 'Bob'}
+('genesis', 2) {'amount': 20.0, 'owner': 'Charlie'}
+('genesis', 3) {'amount': 10.0, 'owner': 'David'}
+('genesis', 4) {'amount': 5.0, 'owner': 'Eve'}
+
+ Bitcoin Transaction Simulator 
+1. Create new transaction
+2. View UTXO set
+3. View mempool
+4. Mine block
+5. Run test scenarios
+6. Exit
+Enter choice: 1
+Sender: Alice
+Available UTXOs: [('genesis', 0, 50.0)]
+Recipient: Bob
+Amount: 10
+Transaction added with fee 0.001
+
+ Bitcoin Transaction Simulator 
+1. Create new transaction
+2. View UTXO set
+3. View mempool
+4. Mine block
+5. Run test scenarios
+6. Exit
+Enter choice: 3
+
+MEMPOOL:
+tx_1770111670_5956 fee: 0.001
+
+ Bitcoin Transaction Simulator 
+1. Create new transaction
+2. View UTXO set
+3. View mempool
+4. Mine block
+5. Run test scenarios
+6. Exit
+Enter choice: 5
+
+ Test Scenarios 
+1. Double-spend in same transaction
+2. Mempool double-spend
+3. Race attack (first-seen rule)
+4. Back
+Select test scenario: 1
+
+Test: Double-spend in SAME transaction
+Alice tries to spend the same UTXO twice
+Result: UTXO ('genesis', 0) already spent in mempool
+
+ Test Scenarios 
+1. Double-spend in same transaction
+2. Mempool double-spend
+3. Race attack (first-seen rule)
+4. Back
+Select test scenario: 2
+
+Test: Mempool Double-spend
+TX1: Alice -> Bob (spends UTXO)
+TX2: Alice -> Charlie (spends SAME UTXO)
+TX1: UTXO ('genesis', 0) already spent in mempool
+TX2: UTXO ('genesis', 0) already spent in mempool
+
+ Test Scenarios 
+1. Double-spend in same transaction
+2. Mempool double-spend
+3. Race attack (first-seen rule)
+4. Back
+Select test scenario: 3
+
+Test: Race Attack (First-Seen Rule)
+Low-fee TX arrives first, High-fee TX arrives second
+Low-fee TX: Transaction added with fee 0.001
+High-fee TX: UTXO ('genesis', 2) already spent in mempool
+
+ Test Scenarios 
+1. Double-spend in same transaction
+2. Mempool double-spend
+3. Race attack (first-seen rule)
+4. Back
+Select test scenario: 4
+
+ Bitcoin Transaction Simulator 
+1. Create new transaction
+2. View UTXO set
+3. View mempool
+4. Mine block
+5. Run test scenarios
+6. Exit
+Enter choice: 3
+
+MEMPOOL:
+tx_1770111670_5956 fee: 0.001
+tx_1770111748_6855 fee: 0.001
+
+ Bitcoin Transaction Simulator 
+1. Create new transaction
+2. View UTXO set
+3. View mempool
+4. Mine block
+5. Run test scenarios
+6. Exit
+Enter choice: 6
+
+ 
+                            test_scenarios
+                        
+
+
+ python3 tests/test_scenarios.py
+
+TEST 1: Basic Valid Transaction
+(True, 'Transaction added with fee 0.001')
+
+TEST 2: Multiple Inputs
+(True, 'Transaction added with fee 0.001')
+
+TEST 3: Double-Spend in Same Transaction
+(False, 'Double spend in same transaction')
+
+TEST 4: Mempool Double-Spend
+TX1: (True, 'Transaction added with fee 0.001')
+TX2: (False, "UTXO ('genesis', 0) already spent in mempool")
+
+TEST 5: Insufficient Funds
+(False, 'Insufficient funds')
+
+TEST 6: Negative Amount
+(False, 'Negative output amount')
+
+TEST 7: Zero Fee Transaction
+(True, 'Transaction added with fee 0.0')
+
+TEST 8: Race Attack Simulation
+Low-fee TX: (True, 'Transaction added with fee 0.001')
+High-fee TX: (False, "UTXO ('genesis', 0) already spent in mempool")
+
+TEST 9: Complete Mining Flow
+Fees earned by miner: 0.002
+Final UTXO set:
+('genesis', 2) {'amount': 20.0, 'owner': 'Charlie'}
+('genesis', 3) {'amount': 10.0, 'owner': 'David'}
+('genesis', 4) {'amount': 5.0, 'owner': 'Eve'}
+('tx_1770111917_2241', 0) {'amount': 10.0, 'owner': 'Bob'}
+('tx_1770111917_2241', 1) {'amount': 39.999, 'owner': 'Alice'}
+('tx_1770111917_3921', 0) {'amount': 5.0, 'owner': 'Charlie'}
+('tx_1770111917_3921', 1) {'amount': 24.999, 'owner': 'Bob'}
+('coinbase_1770111917', 0) {'amount': 0.002, 'owner': 'Miner1'}
+
+TEST 10: Unconfirmed Chain
+(False, "UTXO ('tx_1770111917_7022', 0) does not exist")
